@@ -83,7 +83,7 @@
             border-radius: 4px !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
             padding: 12px !important;
-            max-width: 400px !important;
+            max-width: 450px !important;
             /* animation: popupFadeIn 0.2s ease-out; */
         }
 
@@ -125,6 +125,7 @@
         <div class="title">New York City Mayoral Election</div>
         <p class="description">Election results by borough for the 2025 NYC mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
         <div id="map"></div>
+
         <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div>
         <div class="source">
             Map: Taylor Johnston / CBS News • Source: CBS News election data
@@ -176,7 +177,7 @@
             const boroughsData = await boroughsResponse.json();
 
             // Load NY mayor election data
-            const electionResponse = await fetch("data/geo-ny-mayor.json");
+            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-ny-mayor.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of borough names to election data
@@ -248,6 +249,30 @@
 
             // Shared function to show tooltip
             function showTooltip(e, boroughName, electionInfo) {
+                // Format timestamp for this borough
+                let timestampText = '';
+                if (electionInfo.ts) {
+                    const timestamp = new Date(electionInfo.ts);
+                    const dayName = timestamp.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/New_York' });
+                    const monthAbbrev = timestamp.toLocaleDateString('en-US', { month: 'short', timeZone: 'America/New_York' });
+                    const date = timestamp.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'America/New_York' });
+                    let hour = timestamp.toLocaleDateString('en-US', { hour: 'numeric', timeZone: 'America/New_York' }).split(',')[1].trim().split(' ')[0];
+                    let minute = timestamp.toLocaleDateString('en-US', { minute: '2-digit', timeZone: 'America/New_York' }).split(',')[1].trim();
+                    
+                    // Get hour and minute properly
+                    const timeObj = timestamp.toLocaleTimeString('en-US', { 
+                        hour: 'numeric', 
+                        minute: '2-digit', 
+                        hour12: true,
+                        timeZone: 'America/New_York'
+                    });
+                    const [time, period] = timeObj.split(' ');
+                    const [hourStr, minuteStr] = time.split(':');
+                    const apPeriod = period.toLowerCase();
+                    
+                    timestampText = `<div style="font-size: 10px; color: #666; margin-top: 8px; font-style: normal; line-height: 1.1; white-space: nowrap;">Last updated: ${dayName}, ${monthAbbrev}. ${date}, at ${hourStr}:${minuteStr} ${apPeriod} ET</div>`;
+                }
+                
                 // Build candidate table
                 let candidateRows = '';
                 electionInfo.candidates.forEach((candidate, index) => {
@@ -255,7 +280,7 @@
                     candidateRows += `
                         <tr>
                             <td style="padding: 2px 8px 2px 0; display: flex; align-items: center; white-space: nowrap; min-width: 140px;">
-                                <div style="width: 12px; height: 12px; background-color: ${candidateInfo.color}; border-radius: 2px; margin-right: 6px; flex-shrink: 0;"></div>
+                                <div style="width: 12px; height: 12px; background-color: ${candidateInfo.color}; border-radius: 2px; margin-right: 6px; flex-shrink: 0; align-self: center;"></div>
                                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${candidateInfo.fullName}</span>
                             </td>
                             <td style="padding: 2px 4px; text-align: right; white-space: nowrap;">${candidate.vote.toLocaleString()}</td>
@@ -269,15 +294,16 @@
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed;">
                         <thead>
                             <tr style="border-bottom: 1px solid #ccc;">
-                                <th style="text-align: left; color: #5F5F5F; width: 60%; font-weight: 400">Candidate</th>
-                                <th style="text-align: right; color: #5F5F5F; width:15%;font-weight: 400">Votes</th>
-                                <th style="text-align: right; color: #5F5F5F; width: 25%;font-weight: 400">Percent</th>
+                                <th style="text-align: left; color: #5F5F5F; width: 60%; font-weight: 400; padding: 2px 8px 2px 0;">Candidate</th>
+                                <th style="text-align: right; color: #5F5F5F; width:15%; font-weight: 400; padding: 2px 4px;">Votes</th>
+                                <th style="text-align: right; color: #5F5F5F; width: 25%; font-weight: 400; padding: 2px 0 2px 8px;">Percent</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${candidateRows}
                         </tbody>
                     </table>
+                    ${timestampText}
                 `;
                 
                 popup.setLngLat(e.lngLat)
