@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.css" />
+    <script src="https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.js"></script>
+    <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <style>
+        @font-face {
+            font-family: "TTNorms Pro Normal";
+            src: url("fonts/TTNormsProNormal_normal_normal.woff2") format("woff2"),
+                url("fonts/TTNormsProNormal_normal_normal.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "TTNorms Pro Bold";
+            src: url("fonts/TTNormsProBold.woff2") format("woff2"),
+                url("fonts/TTNormsProBold.woff") format("woff");
+        }
+
+        body {
+            margin: 0 !important;
+        }
+
+        a {
+            text-decoration: underline;
+            text-decoration-color: #858585;
+            color: #858585;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-family: "TTNorms Pro Bold", sans-serif;
+            font-size: 22px;
+            line-height: 1.3;
+            color: #101010;
+            font-weight: bold;
+        }
+
+        .description {
+            font-family: "TTNorms Pro Normal", sans-serif;
+            font-size: 16px;
+            line-height: 1.3;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            max-width: 750px;
+        }
+
+
+        #map {
+            max-height: 600px;
+            max-width: 750px;
+            height: 700px;
+        }
+
+        .note {
+            font-family: "TTNorms Pro Normal", sans-serif;
+            font-size: 16px;
+            margin-top: 0.5rem;
+        }
+
+        .source {
+            font-family: "TTNorms Pro Normal", sans-serif;
+            color: rgb(130, 130, 130);
+            font-size: 14px;
+        }
+
+        button.maplibregl-ctrl-compass {
+            display: none !important;
+        }
+
+        /* Smooth popup animations */
+        .smooth-popup .maplibregl-popup-content {
+            font-family: "TTNorms Pro Normal", sans-serif !important;
+            border-radius: 4px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+            padding: 12px !important;
+            max-width: 400px !important;
+            /* animation: popupFadeIn 0.2s ease-out; */
+        }
+
+        .smooth-popup .maplibregl-popup-tip {
+            border-top-color: #fff !important;
+        }
+
+        @keyframes popupFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* POPUP STYLES */
+        .boroName {
+            font-family: "TTNorms Pro Bold", sans-serif;
+            font-size: 16px;
+            margin-bottom: 0.5rem;
+
+        }
+
+        thead {font-family: "TTNorms Pro Normal", sans-serif;}
+
+        @media (max-width: 430px) {
+            #map {
+                max-height: 500px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="title">New York City Mayoral Election</div>
+        <p class="description">Election results by borough for the 2025 NYC mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
+        <div id="map"></div>
+        <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div>
+        <div class="source">
+            Map: Taylor Johnston / CBS News • Source: CBS News election data
+        </div>
+    </div>
+
+    <script>
+        const isMobile = window.innerWidth <= 768;
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        const initialZoom = isMobile ? 2 : 2.5;
+        let pymChild;
+
+        // Update interaction text for click-only behavior
+        const interactionText = document.getElementById('interaction-text');
+        interactionText.textContent = 'Click on each borough to see detailed vote counts and leading candidates.';
+
+        const map = new maplibregl.Map({
+            container: "map",
+            style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
+            center: [-73.94, 40.70],
+            zoom: 9.5,
+            minZoom: 9,
+            maxZoom: 15,
+            attributionControl: false
+        });
+
+        map.scrollZoom.disable();
+        map.addControl(new maplibregl.NavigationControl(), "top-left");
+        map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+
+        // Create smooth popup with custom styling
+        const popup = new maplibregl.Popup({ 
+            closeButton: false, 
+            closeOnClick: false,
+            className: 'smooth-popup'
+        });
+
+        map.on("load", async () => {
+            // Hide all default labels
+            const layers = map.getStyle().layers;
+            layers.forEach((layer) => {
+                if (layer.type === "symbol") {
+                    map.setLayoutProperty(layer.id, "visibility", "none");
+                }
+            });
+
+            // Load NYC borough shapefile
+            const boroughsResponse = await fetch("shapefiles/nyc-boroughs.json");
+            const boroughsData = await boroughsResponse.json();
+
+            // Load NY mayor election data
+            const electionResponse = await fetch("data/geo-ny-mayor.json");
+            const electionData = await electionResponse.json();
+
+            // Create a mapping of borough names to election data
+            const electionByBorough = {};
+            electionData.race.counties.forEach(county => {
+                electionByBorough[county.name] = county;
+            });
+
+            // Add color property to borough features based on election data
+            boroughsData.features.forEach(feature => {
+                const boroughName = feature.properties.BoroName;
+                const electionInfo = electionByBorough[boroughName];
+                if (electionInfo) {
+                    feature.properties.color = electionInfo.color;
+                    // Create a darker version of the color for the outline
+                    const hex = electionInfo.color.replace('#', '');
+                    const r = parseInt(hex.substr(0, 2), 16);
+                    const g = parseInt(hex.substr(2, 2), 16);
+                    const b = parseInt(hex.substr(4, 2), 16);
+                    // Darken by reducing RGB values by 30%
+                    const darkerR = Math.floor(r * 0.7);
+                    const darkerG = Math.floor(g * 0.7);
+                    const darkerB = Math.floor(b * 0.7);
+                    feature.properties.outlineColor = `rgb(${darkerR}, ${darkerG}, ${darkerB})`;
+                    feature.properties.totalVote = electionInfo.totalVote;
+                    feature.properties.winningCandidate = electionInfo.candidates[0];
+                }
+            });
+
+            map.addSource("boroughs", {
+                type: "geojson",
+                data: boroughsData
+            });
+
+            map.addLayer({
+                id: "boroughs-fill",
+                type: "fill",
+                source: "boroughs",
+                paint: {
+                    "fill-color": ["get", "color"],
+                    "fill-opacity": 0.8
+                }
+            });
+
+            map.addLayer({
+                id: "boroughs-outline",
+                type: "line",
+                source: "boroughs",
+                paint: {
+                    "line-color": ["get", "outlineColor"],
+                    "line-width": 0.1
+                }
+            });
+
+            // Add hover highlight layer
+            map.addLayer({
+                id: "boroughs-hover",
+                type: "line",
+                source: "boroughs",
+                paint: {
+                    "line-color": "#000000",
+                    "line-width": 1.5
+                },
+                filter: ["==", "BoroName", ""]
+            });
+
+            let hoveredBoroughId = null;
+            let clickedBoroughId = null;
+
+            // Shared function to show tooltip
+            function showTooltip(e, boroughName, electionInfo) {
+                // Build candidate table
+                let candidateRows = '';
+                electionInfo.candidates.forEach((candidate, index) => {
+                    const candidateInfo = electionData.race.candidates.find(c => c.id === candidate.id);
+                    candidateRows += `
+                        <tr>
+                            <td style="padding: 2px 8px 2px 0; display: flex; align-items: center; white-space: nowrap; min-width: 140px;">
+                                <div style="width: 12px; height: 12px; background-color: ${candidateInfo.color}; border-radius: 2px; margin-right: 6px; flex-shrink: 0;"></div>
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${candidateInfo.fullName}</span>
+                            </td>
+                            <td style="padding: 2px 4px; text-align: right; white-space: nowrap;">${candidate.vote.toLocaleString()}</td>
+                            <td style="padding: 2px 0 2px 8px; text-align: right; white-space: nowrap;"><span style="font-family: 'TTNorms Pro Bold', sans-serif;">${candidate.pct.toFixed(1)}%</span></td>
+                        </tr>
+                    `;
+                });
+
+                const html = `
+                    <div class="boroName">${boroughName}</div>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #ccc;">
+                                <th style="text-align: left; color: #5F5F5F; width: 60%; font-weight: 400">Candidate</th>
+                                <th style="text-align: right; color: #5F5F5F; width:15%;font-weight: 400">Votes</th>
+                                <th style="text-align: right; color: #5F5F5F; width: 25%;font-weight: 400">Percent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${candidateRows}
+                        </tbody>
+                    </table>
+                `;
+                
+                popup.setLngLat(e.lngLat)
+                    .setHTML(html)
+                    .addTo(map);
+            }
+
+            // Click to show/hide tooltip (for all devices)
+            map.on("click", "boroughs-fill", (e) => {
+                const props = e.features[0].properties;
+                const boroughName = props.BoroName;
+                const electionInfo = electionByBorough[boroughName];
+                
+                if (clickedBoroughId === boroughName) {
+                    // Clicking same borough - hide tooltip
+                    clickedBoroughId = null;
+                    popup.remove();
+                    map.setFilter("boroughs-hover", ["==", "BoroName", ""]);
+                } else {
+                    // Clicking new borough - show tooltip
+                    clickedBoroughId = boroughName;
+                    map.setFilter("boroughs-hover", ["==", "BoroName", boroughName]);
+                    
+                    if (electionInfo) {
+                        showTooltip(e, boroughName, electionInfo);
+                    }
+                }
+                map.getCanvas().style.cursor = "pointer";
+                pymChild?.sendHeight();
+            });
+
+            // Hide tooltip when clicking elsewhere
+            map.on("click", (e) => {
+                const features = map.queryRenderedFeatures(e.point, {
+                    layers: ["boroughs-fill"]
+                });
+                
+                if (features.length === 0) {
+                    clickedBoroughId = null;
+                    popup.remove();
+                    map.setFilter("boroughs-hover", ["==", "BoroName", ""]);
+                }
+            });
+
+            pymChild?.sendHeight();
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            pymChild = new pym.Child();
+            pymChild.sendHeight();
+        });
+
+        map.on("moveend", () => pymChild?.sendHeight());
+    </script>
+</body>
+
+</html>
