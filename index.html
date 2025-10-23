@@ -126,7 +126,7 @@
         <p class="description">Election results by borough for the 2025 NYC mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
         <div id="map"></div>
 
-        <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div>
+        <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
         <div class="source">
             Map: Taylor Johnston / CBS News • Source: CBS News election data
         </div>
@@ -290,7 +290,15 @@
                 });
 
                 const html = `
-                    <div class="boroName">${boroughName}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <div class="boroName" style="margin-bottom: 0;">${boroughName}</div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 14px; color: #767676;">${electionInfo.pctPrecIn}% in</span>
+                            <div style="width: 40px; height: 12px; background-color: #767676; border-radius: 9px; overflow: hidden;">
+                                <div style="width: ${electionInfo.pctPrecIn}%; height: 100%; background-color: #767676; transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed;">
                         <thead>
                             <tr style="border-bottom: 1px solid #ccc;">
