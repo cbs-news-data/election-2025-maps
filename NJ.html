@@ -98,6 +98,7 @@
                 opacity: 0;
                 transform: scale(0.95) translateY(-5px);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -112,7 +113,9 @@
 
         }
 
-        thead {font-family: "TTNorms Pro Normal", sans-serif;}
+        thead {
+            font-family: "TTNorms Pro Normal", sans-serif;
+        }
 
         @media (max-width: 430px) {
             #map {
@@ -125,7 +128,9 @@
 <body>
     <div id="container">
         <div class="title">New Jersey Gubernatorial Election</div>
-        <p class="description">Election results by county for the 2025 New Jersey gubernatorial race. <span id="interaction-text">Hover over each county to see detailed vote counts and leading candidates.</span></p>
+        <p class="description">Election results by county for the 2025 New Jersey gubernatorial race. <span
+                id="interaction-text">Hover over each county to see detailed vote counts and leading candidates.</span>
+        </p>
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
@@ -151,15 +156,16 @@
             zoom: 7,
             minZoom: 7,
             maxZoom: 15,
-            attributionControl: false        });
+            attributionControl: false
+        });
 
         map.scrollZoom.disable();
         map.addControl(new maplibregl.NavigationControl(), "top-left");
         map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
 
         // Create smooth popup with custom styling
-        const popup = new maplibregl.Popup({ 
-            closeButton: false, 
+        const popup = new maplibregl.Popup({
+            closeButton: false,
             closeOnClick: false,
             className: 'smooth-popup'
         });
@@ -178,7 +184,7 @@
             const countiesData = await countiesResponse.json();
 
             // Load NJ governor election data
-            const electionResponse = await fetch("data/geo-nj-gov.json");
+            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-nj-gov.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of county names to election data
@@ -262,7 +268,7 @@
             function showTooltip(e, countyName, electionInfo) {
                 // Convert county name to proper case and add "County"
                 const properCaseCounty = countyName.toLowerCase().replace(/\b\w/g, l => l.toUpperCase()) + ' County';
-                
+
                 // Format timestamp for this county
                 let timestampText = '';
                 if (electionInfo.ts) {
@@ -272,21 +278,21 @@
                     const date = timestamp.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'America/New_York' });
                     let hour = timestamp.toLocaleDateString('en-US', { hour: 'numeric', timeZone: 'America/New_York' }).split(',')[1].trim().split(' ')[0];
                     let minute = timestamp.toLocaleDateString('en-US', { minute: '2-digit', timeZone: 'America/New_York' }).split(',')[1].trim();
-                    
+
                     // Get hour and minute properly
-                    const timeObj = timestamp.toLocaleTimeString('en-US', { 
-                        hour: 'numeric', 
-                        minute: '2-digit', 
+                    const timeObj = timestamp.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
                         hour12: true,
                         timeZone: 'America/New_York'
                     });
                     const [time, period] = timeObj.split(' ');
                     const [hourStr, minuteStr] = time.split(':');
                     const apPeriod = period.toLowerCase();
-                    
+
                     timestampText = `<div style="font-size: 10px; color: #666; margin-top: 8px; font-style: normal; line-height: 1.1; white-space: nowrap;">Last updated: ${dayName}, ${monthAbbrev}. ${date}, at ${hourStr}:${minuteStr} ${apPeriod} ET</div>`;
                 }
-                
+
                 // Build candidate table
                 let candidateRows = '';
                 electionInfo.candidates.forEach((candidate, index) => {
@@ -327,7 +333,7 @@
                     </table>
                     ${timestampText}
                 `;
-                
+
                 popup.setLngLat(e.lngLat)
                     .setHTML(html)
                     .addTo(map);
@@ -338,7 +344,7 @@
                 const props = e.features[0].properties;
                 const countyName = props.COUNTY;
                 const electionInfo = electionByCounty[countyName];
-                
+
                 if (clickedCountyId === countyName) {
                     // Clicking same county - hide tooltip
                     clickedCountyId = null;
@@ -348,7 +354,7 @@
                     // Clicking new county - show tooltip
                     clickedCountyId = countyName;
                     map.setFilter("counties-hover", ["==", "COUNTY", countyName]);
-                    
+
                     if (electionInfo) {
                         showTooltip(e, countyName, electionInfo);
                     }
@@ -362,7 +368,7 @@
                 const features = map.queryRenderedFeatures(e.point, {
                     layers: ["counties-fill"]
                 });
-                
+
                 if (features.length === 0) {
                     clickedCountyId = null;
                     popup.remove();

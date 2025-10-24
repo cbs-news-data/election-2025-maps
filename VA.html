@@ -99,6 +99,7 @@
                 opacity: 0;
                 transform: scale(0.95) translateY(-5px);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -113,7 +114,9 @@
 
         }
 
-        thead {font-family: "TTNorms Pro Normal", sans-serif;}
+        thead {
+            font-family: "TTNorms Pro Normal", sans-serif;
+        }
 
         @media (max-width: 430px) {
             #map {
@@ -126,7 +129,8 @@
 <body>
     <div id="container">
         <div class="title">Virginia Gubernatorial Election</div>
-        <p class="description">Election results by county and independent city for the 2025 Virginia gubernatorial race. Click on each county to see detailed vote counts and leading candidates.
+        <p class="description">Election results by county and independent city for the 2025 Virginia gubernatorial race.
+            Click on each county to see detailed vote counts and leading candidates.
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
@@ -142,7 +146,6 @@
         let pymChild;
 
 
-
         const map = new maplibregl.Map({
             container: "map",
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
@@ -150,15 +153,16 @@
             zoom: 5.9,
             minZoom: 5.9,
             maxZoom: 12,
-            attributionControl: false});
+            attributionControl: false
+        });
 
         map.scrollZoom.disable();
         map.addControl(new maplibregl.NavigationControl(), "top-left");
         map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
 
         // Create smooth popup with custom styling
-        const popup = new maplibregl.Popup({ 
-            closeButton: false, 
+        const popup = new maplibregl.Popup({
+            closeButton: false,
             closeOnClick: false,
             className: 'smooth-popup'
         });
@@ -177,31 +181,41 @@
             const countiesData = await countiesResponse.json();
 
             // Load Virginia governor election data
-            const electionResponse = await fetch("data/geo-va-gov.json");
+            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-va-gov.json");
             const electionData = await electionResponse.json();
+
+            console.log('Election data loaded:', electionData);
+            console.log('Counties in election data:', electionData.race?.counties?.length || 'No counties found');
 
             // Create a mapping of county names to election data
             const electionByCounty = {};
-            electionData.race.counties.forEach(county => {
-                electionByCounty[county.name.toUpperCase()] = county;
-            });
+            if (electionData.race && electionData.race.counties) {
+                electionData.race.counties.forEach(county => {
+                    electionByCounty[county.name.toUpperCase()] = county;
+                    console.log('Mapped county:', county.name);
+                });
+            } else {
+                console.error('No county data found in election response');
+            }
 
             // Add color property to county features based on election data
             countiesData.features.forEach(feature => {
                 const countyName = feature.properties.NAME;
                 const namelsad = feature.properties.NAMELSAD;
-                
+
                 // Create a unique identifier that distinguishes Fairfax County from Fairfax City
                 const uniqueId = namelsad.includes('City') ? namelsad : countyName;
                 feature.properties.uniqueId = uniqueId;
-                
+
                 let electionInfo = electionByCounty[uniqueId.toUpperCase()];
-                
+
                 // If no direct match, try fallback patterns
                 if (!electionInfo) {
                     electionInfo = electionByCounty[countyName.toUpperCase()];
                 }
-                
+
+                console.log(`County: ${countyName}, UniqueId: ${uniqueId}, Found election data: ${!!electionInfo}`);
+
                 if (electionInfo) {
                     feature.properties.color = electionInfo.color;
                     // Create a darker version of the color for the outline
@@ -216,6 +230,11 @@
                     feature.properties.outlineColor = `rgb(${darkerR}, ${darkerG}, ${darkerB})`;
                     feature.properties.totalVote = electionInfo.totalVote;
                     feature.properties.winningCandidate = electionInfo.candidates[0];
+                } else {
+                    console.warn(`No election data found for county: ${countyName} (${uniqueId})`);
+                    // Set default colors for counties without election data
+                    feature.properties.color = "#cccccc";
+                    feature.properties.outlineColor = "#999999";
                 }
             });
 
@@ -276,21 +295,21 @@
                     const date = timestamp.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'America/New_York' });
                     let hour = timestamp.toLocaleDateString('en-US', { hour: 'numeric', timeZone: 'America/New_York' }).split(',')[1].trim().split(' ')[0];
                     let minute = timestamp.toLocaleDateString('en-US', { minute: '2-digit', timeZone: 'America/New_York' }).split(',')[1].trim();
-                    
+
                     // Get hour and minute properly
-                    const timeObj = timestamp.toLocaleTimeString('en-US', { 
-                        hour: 'numeric', 
-                        minute: '2-digit', 
+                    const timeObj = timestamp.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
                         hour12: true,
                         timeZone: 'America/New_York'
                     });
                     const [time, period] = timeObj.split(' ');
                     const [hourStr, minuteStr] = time.split(':');
                     const apPeriod = period.toLowerCase();
-                    
+
                     timestampText = `<div style="font-size: 10px; color: #666; margin-top: 8px; font-style: normal; line-height: 1.1; white-space: nowrap;">Last updated: ${dayName}, ${monthAbbrev}. ${date}, at ${hourStr}:${minuteStr} ${apPeriod} ET</div>`;
                 }
-                
+
                 // Build candidate table
                 let candidateRows = '';
                 electionInfo.candidates.forEach((candidate, index) => {
@@ -331,7 +350,7 @@
                     </table>
                     ${timestampText}
                 `;
-                
+
                 popup.setLngLat(e.lngLat)
                     .setHTML(html)
                     .addTo(map);
@@ -342,14 +361,14 @@
                 const props = e.features[0].properties;
                 const countyName = props.NAME;
                 const uniqueId = props.uniqueId;
-                
+
                 let electionInfo = electionByCounty[uniqueId.toUpperCase()];
-                
+
                 // If no direct match, try fallback patterns
                 if (!electionInfo) {
                     electionInfo = electionByCounty[countyName.toUpperCase()];
                 }
-                
+
                 if (clickedCountyId === uniqueId) {
                     // Clicking same county - hide tooltip
                     clickedCountyId = null;
@@ -359,7 +378,7 @@
                     // Clicking new county - show tooltip
                     clickedCountyId = uniqueId;
                     map.setFilter("counties-hover", ["==", "uniqueId", uniqueId]);
-                    
+
                     if (electionInfo) {
                         showTooltip(e, countyName, electionInfo);
                     }
@@ -373,7 +392,7 @@
                 const features = map.queryRenderedFeatures(e.point, {
                     layers: ["counties-fill"]
                 });
-                
+
                 if (features.length === 0) {
                     clickedCountyId = null;
                     popup.remove();

@@ -97,6 +97,7 @@
                 opacity: 0;
                 transform: scale(0.95) translateY(-5px);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -111,7 +112,9 @@
 
         }
 
-        thead {font-family: "TTNorms Pro Normal", sans-serif;}
+        thead {
+            font-family: "TTNorms Pro Normal", sans-serif;
+        }
 
         @media (max-width: 430px) {
             #map {
@@ -124,7 +127,9 @@
 <body>
     <div id="container">
         <div class="title">New York City Mayoral Election</div>
-        <p class="description">Election results by borough for the 2025 New York City mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
+        <p class="description">Election results by borough for the 2025 New York City mayoral race. <span
+                id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span>
+        </p>
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
@@ -158,8 +163,8 @@
         map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
 
         // Create smooth popup with custom styling
-        const popup = new maplibregl.Popup({ 
-            closeButton: false, 
+        const popup = new maplibregl.Popup({
+            closeButton: false,
             closeOnClick: false,
             className: 'smooth-popup'
         });
@@ -178,7 +183,7 @@
             const boroughsData = await boroughsResponse.json();
 
             // Load NY mayor election data
-            const electionResponse = await fetch("data/geo-ny-mayor.json");
+            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-ny-mayor.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of borough names to election data
@@ -259,21 +264,21 @@
                     const date = timestamp.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'America/New_York' });
                     let hour = timestamp.toLocaleDateString('en-US', { hour: 'numeric', timeZone: 'America/New_York' }).split(',')[1].trim().split(' ')[0];
                     let minute = timestamp.toLocaleDateString('en-US', { minute: '2-digit', timeZone: 'America/New_York' }).split(',')[1].trim();
-                    
+
                     // Get hour and minute properly
-                    const timeObj = timestamp.toLocaleTimeString('en-US', { 
-                        hour: 'numeric', 
-                        minute: '2-digit', 
+                    const timeObj = timestamp.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
                         hour12: true,
                         timeZone: 'America/New_York'
                     });
                     const [time, period] = timeObj.split(' ');
                     const [hourStr, minuteStr] = time.split(':');
                     const apPeriod = period.toLowerCase();
-                    
+
                     timestampText = `<div style="font-size: 10px; color: #666; margin-top: 8px; font-style: normal; line-height: 1.1; white-space: nowrap;">Last updated: ${dayName}, ${monthAbbrev}. ${date}, at ${hourStr}:${minuteStr} ${apPeriod} ET</div>`;
                 }
-                
+
                 // Build candidate table
                 let candidateRows = '';
                 electionInfo.candidates.forEach((candidate, index) => {
@@ -314,7 +319,7 @@
                     </table>
                     ${timestampText}
                 `;
-                
+
                 popup.setLngLat(e.lngLat)
                     .setHTML(html)
                     .addTo(map);
@@ -325,7 +330,7 @@
                 const props = e.features[0].properties;
                 const boroughName = props.BoroName;
                 const electionInfo = electionByBorough[boroughName];
-                
+
                 if (clickedBoroughId === boroughName) {
                     // Clicking same borough - hide tooltip
                     clickedBoroughId = null;
@@ -335,7 +340,7 @@
                     // Clicking new borough - show tooltip
                     clickedBoroughId = boroughName;
                     map.setFilter("boroughs-hover", ["==", "BoroName", boroughName]);
-                    
+
                     if (electionInfo) {
                         showTooltip(e, boroughName, electionInfo);
                     }
@@ -349,7 +354,7 @@
                 const features = map.queryRenderedFeatures(e.point, {
                     layers: ["boroughs-fill"]
                 });
-                
+
                 if (features.length === 0) {
                     clickedBoroughId = null;
                     popup.remove();
