@@ -72,7 +72,6 @@
             color: rgb(130, 130, 130);
             font-size: 14px;
             margin-top: 0.5rem;
-
         }
 
         button.maplibregl-ctrl-compass {
@@ -106,7 +105,7 @@
         }
 
         /* POPUP STYLES */
-        .countyName {
+        .boroName {
             font-family: "TTNorms Pro Bold", sans-serif;
             font-size: 16px;
             margin-bottom: 0.5rem;
@@ -127,15 +126,13 @@
 
 <body>
     <div id="container">
-        <div class="title">New Jersey Gubernatorial Election</div>
-        <p class="description">Election results by county for the 2025 New Jersey gubernatorial race. <span
-                id="interaction-text">Hover over each county to see detailed vote counts and leading candidates.</span>
-        </p>
+        <div class="title">California Special Election</div>
+        <p class="description">Election results by county for the 2025 California special election on redistricting. Click on each county to see detailed vote counts.</p>
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
         <div class="source">
-            Map: Taylor Johnston / CBS News • Source: CBS News election data, NJ Office of GIS
+            Map: Taylor Johnston / CBS News • Source: CBS News election data, California Department of Technology
         </div>
     </div>
 
@@ -145,19 +142,16 @@
         const initialZoom = isMobile ? 2 : 2.5;
         let pymChild;
 
-        // Update interaction text for click-only behavior
-        const interactionText = document.getElementById('interaction-text');
-        interactionText.textContent = 'Click on each county to see detailed vote counts and leading candidates.';
+
 
         const map = new maplibregl.Map({
             container: "map",
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
-            center: [-74.61, 40.152],
+            center: [-119.44, 37.39], // California center
             zoom: initialZoom,
-            minZoom: 7,
-            maxZoom: 15,
-            attributionControl: false
-        });
+            minZoom: 5,
+            maxZoom: 10,
+            attributionControl: false        });
 
         map.scrollZoom.disable();
         map.addControl(new maplibregl.NavigationControl(), "top-left");
@@ -179,30 +173,25 @@
                 }
             });
 
-            // Load NJ counties shapefile
-            const countiesResponse = await fetch("shapefiles/nj-counties.json");
+            // Load CA counties shapefile
+            const countiesResponse = await fetch("shapefiles/ca-counties.json");
             const countiesData = await countiesResponse.json();
 
-            // Load NJ governor election data
-            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-nj-gov.json");
+            // Load CA proposition election data
+            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-ca-prop.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of county names to election data
             const electionByCounty = {};
             electionData.race.counties.forEach(county => {
-                // Convert to uppercase to match shapefile format
                 electionByCounty[county.name.toUpperCase()] = county;
             });
 
-            console.log('Election counties:', Object.keys(electionByCounty));
-
             // Add color property to county features based on election data
             countiesData.features.forEach(feature => {
-                const countyName = feature.properties.COUNTY;
-                console.log('Shapefile county:', countyName);
-                const electionInfo = electionByCounty[countyName];
+                const countyName = feature.properties.NAME;
+                const electionInfo = electionByCounty[countyName.toUpperCase()];
                 if (electionInfo) {
-                    console.log('Match found for:', countyName);
                     feature.properties.color = electionInfo.color;
                     // Create a darker version of the color for the outline
                     const hex = electionInfo.color.replace('#', '');
@@ -215,10 +204,9 @@
                     const darkerB = Math.floor(b * 0.7);
                     feature.properties.outlineColor = `rgb(${darkerR}, ${darkerG}, ${darkerB})`;
                     feature.properties.totalVote = electionInfo.totalVote;
-                    feature.properties.winningCandidate = electionInfo.candidates[0];
+                    feature.properties.winningChoice = electionInfo.candidates[0];
                 } else {
-                    console.log('No match found for:', countyName);
-                    // Set default color for counties without election data
+                    // Set default colors for counties without election data
                     feature.properties.color = "#cccccc";
                     feature.properties.outlineColor = "#999999";
                 }
@@ -258,7 +246,7 @@
                     "line-color": "#000000",
                     "line-width": 1.5
                 },
-                filter: ["==", "COUNTY", ""]
+                filter: ["==", "NAME", ""]
             });
 
             let hoveredCountyId = null;
@@ -266,9 +254,9 @@
 
             // Shared function to show tooltip
             function showTooltip(e, countyName, electionInfo) {
-                // Convert county name to proper case and add "County"
+                // Format county name properly
                 const properCaseCounty = countyName.toLowerCase().replace(/\b\w/g, l => l.toUpperCase()) + ' County';
-
+                
                 // Format timestamp for this county
                 let timestampText = '';
                 if (electionInfo.ts) {
@@ -276,8 +264,6 @@
                     const dayName = timestamp.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'America/New_York' });
                     const monthAbbrev = timestamp.toLocaleDateString('en-US', { month: 'short', timeZone: 'America/New_York' });
                     const date = timestamp.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'America/New_York' });
-                    let hour = timestamp.toLocaleDateString('en-US', { hour: 'numeric', timeZone: 'America/New_York' }).split(',')[1].trim().split(' ')[0];
-                    let minute = timestamp.toLocaleDateString('en-US', { minute: '2-digit', timeZone: 'America/New_York' }).split(',')[1].trim();
 
                     // Get hour and minute properly
                     const timeObj = timestamp.toLocaleTimeString('en-US', {
@@ -293,25 +279,26 @@
                     timestampText = `<div style="font-size: 10px; color: #666; margin-top: 8px; font-style: normal; line-height: 1.1; white-space: nowrap;">Last updated: ${dayName}, ${monthAbbrev}. ${date}, at ${hourStr}:${minuteStr} ${apPeriod} ET</div>`;
                 }
 
-                // Build candidate table
-                let candidateRows = '';
-                electionInfo.candidates.forEach((candidate, index) => {
-                    const candidateInfo = electionData.race.candidates.find(c => c.id === candidate.id);
-                    candidateRows += `
+                // Build Yes/No table for proposition
+                let choiceRows = '';
+                electionInfo.candidates.forEach((choice, index) => {
+                    const choiceInfo = electionData.race.candidates.find(c => c.id === choice.id);
+                    const choiceName = choiceInfo.fullName || (choice.id === 1 ? 'Yes' : 'No');
+                    choiceRows += `
                         <tr>
                             <td style="padding: 2px 8px 2px 0; display: flex; align-items: center; white-space: nowrap; min-width: 140px;">
-                                <div style="width: 12px; height: 12px; background-color: ${candidateInfo.color}; border-radius: 2px; margin-right: 6px; flex-shrink: 0; align-self: center;"></div>
-                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${candidateInfo.fullName}</span>
+                                <div style="width: 12px; height: 12px; background-color: ${choiceInfo.color}; border-radius: 2px; margin-right: 6px; flex-shrink: 0; align-self: center;"></div>
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${choiceName}</span>
                             </td>
-                            <td style="padding: 2px 4px; text-align: right; white-space: nowrap;">${candidate.vote.toLocaleString()}</td>
-                            <td style="padding: 2px 0 2px 8px; text-align: right; white-space: nowrap;"><span style="font-family: 'TTNorms Pro Bold', sans-serif;">${candidate.pct.toFixed(1)}%</span></td>
+                            <td style="padding: 2px 4px; text-align: right; white-space: nowrap;">${choice.vote.toLocaleString()}</td>
+                            <td style="padding: 2px 0 2px 8px; text-align: right; white-space: nowrap;"><span style="font-family: 'TTNorms Pro Bold', sans-serif;">${choice.pct.toFixed(1)}%</span></td>
                         </tr>
                     `;
                 });
 
                 const html = `
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                        <div class="countyName" style="margin-bottom: 0; flex: 1; margin-right: 10px; line-height: 1.2;">${properCaseCounty}</div>
+                        <div class="boroName" style="margin-bottom: 0; flex: 1; margin-right: 10px; line-height: 1.2;">${properCaseCounty}</div>
                         <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
                             <span style="font-size: 14px; color: #767676;">${electionInfo.pctPrecIn}% in</span>
                             <div style="width: 40px; height: 12px; background-color: #e0e0e0; border-radius: 9px; overflow: hidden;">
@@ -322,13 +309,13 @@
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed;">
                         <thead>
                             <tr style="border-bottom: 1px solid #ccc;">
-                                <th style="text-align: left; color: #5F5F5F; width: 60%; font-weight: 400; padding: 2px 8px 2px 0;">Candidate</th>
+                                <th style="text-align: left; color: #5F5F5F; width: 60%; font-weight: 400; padding: 2px 8px 2px 0;">Choice</th>
                                 <th style="text-align: right; color: #5F5F5F; width:15%; font-weight: 400; padding: 2px 4px;">Votes</th>
                                 <th style="text-align: right; color: #5F5F5F; width: 25%; font-weight: 400; padding: 2px 0 2px 8px;">Percent</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${candidateRows}
+                            ${choiceRows}
                         </tbody>
                     </table>
                     ${timestampText}
@@ -342,18 +329,18 @@
             // Click to show/hide tooltip (for all devices)
             map.on("click", "counties-fill", (e) => {
                 const props = e.features[0].properties;
-                const countyName = props.COUNTY;
-                const electionInfo = electionByCounty[countyName];
+                const countyName = props.NAME;
+                const electionInfo = electionByCounty[countyName.toUpperCase()];
 
                 if (clickedCountyId === countyName) {
                     // Clicking same county - hide tooltip
                     clickedCountyId = null;
                     popup.remove();
-                    map.setFilter("counties-hover", ["==", "COUNTY", ""]);
+                    map.setFilter("counties-hover", ["==", "NAME", ""]);
                 } else {
                     // Clicking new county - show tooltip
                     clickedCountyId = countyName;
-                    map.setFilter("counties-hover", ["==", "COUNTY", countyName]);
+                    map.setFilter("counties-hover", ["==", "NAME", countyName]);
 
                     if (electionInfo) {
                         showTooltip(e, countyName, electionInfo);
@@ -372,7 +359,7 @@
                 if (features.length === 0) {
                     clickedCountyId = null;
                     popup.remove();
-                    map.setFilter("counties-hover", ["==", "COUNTY", ""]);
+                    map.setFilter("counties-hover", ["==", "NAME", ""]);
                 }
             });
 

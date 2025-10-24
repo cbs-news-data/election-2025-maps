@@ -127,8 +127,7 @@
 <body>
     <div id="container">
         <div class="title">New York City Mayoral Election</div>
-        <p class="description">Election results by borough for the 2025 New York City mayoral race. <span
-                id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span>
+        <p class="description">Election results by borough for the 2025 New York City mayoral race. Click on each borough to see detailed vote counts and leading candidates.
         </p>
         <div id="map"></div>
 
@@ -144,15 +143,11 @@
         const initialZoom = isMobile ? 2 : 2.5;
         let pymChild;
 
-        // Update interaction text for click-only behavior
-        const interactionText = document.getElementById('interaction-text');
-        interactionText.textContent = 'Click on each borough to see detailed vote counts and leading candidates.';
-
         const map = new maplibregl.Map({
             container: "map",
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
             center: [-73.94, 40.70],
-            zoom: 9.5,
+            zoom: initialZoom,
             minZoom: 9.5,
             maxZoom: 15,
             attributionControl: false

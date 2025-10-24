@@ -1,0 +1,894 @@
+{
+  "race": {
+    "counties": [
+      {
+        "name": "Alameda",
+        "color": "#FF6600",
+        "fips": "6001",
+        "precinctsOf": 539,
+        "precinctsIn": 172,
+        "pctPrecIn": 31.9,
+        "pctExpVote": 0.0,
+        "totalVote": 84643,
+        "ts": "2025-10-24T18:18:10.267Z",
+        "candidates": [
+          { "vote": 44054, "pct": 52.0, "id": 3 },
+          { "vote": 40589, "pct": 48.0, "id": 2 }
+        ]
+      },
+      {
+        "name": "Alpine",
+        "color": "#FF6600",
+        "fips": "6003",
+        "precinctsOf": 5,
+        "precinctsIn": 5,
+        "pctPrecIn": 100.0,
+        "pctExpVote": 0.0,
+        "totalVote": 278,
+        "ts": "2025-10-24T18:20:02.4Z",
+        "candidates": [
+          { "vote": 193, "pct": 69.4, "id": 3 },
+          { "vote": 85, "pct": 30.6, "id": 2 }
+        ]
+      },
+      {
+        "name": "Amador",
+        "color": "#FF6600",
+        "fips": "6005",
+        "precinctsOf": 47,
+        "precinctsIn": 40,
+        "pctPrecIn": 85.1,
+        "pctExpVote": 0.0,
+        "totalVote": 7842,
+        "ts": "2025-10-24T18:00:24.03Z",
+        "candidates": [
+          { "vote": 4022, "pct": 51.3, "id": 3 },
+          { "vote": 3820, "pct": 48.7, "id": 2 }
+        ]
+      },
+      {
+        "name": "Butte",
+        "color": "#187F99",
+        "fips": "6007",
+        "precinctsOf": 90,
+        "precinctsIn": 64,
+        "pctPrecIn": 71.1,
+        "pctExpVote": 0.0,
+        "totalVote": 26189,
+        "ts": "2025-10-24T18:14:32.303Z",
+        "candidates": [
+          { "vote": 13232, "pct": 50.5, "id": 2 },
+          { "vote": 12957, "pct": 49.5, "id": 3 }
+        ]
+      },
+      {
+        "name": "Calaveras",
+        "color": "#FF6600",
+        "fips": "6009",
+        "precinctsOf": 25,
+        "precinctsIn": 20,
+        "pctPrecIn": 80.0,
+        "pctExpVote": 0.0,
+        "totalVote": 9035,
+        "ts": "2025-10-24T18:12:43.203Z",
+        "candidates": [
+          { "vote": 4553, "pct": 50.4, "id": 3 },
+          { "vote": 4482, "pct": 49.6, "id": 2 }
+        ]
+      },
+      {
+        "name": "Colusa",
+        "color": "#187F99",
+        "fips": "6011",
+        "precinctsOf": 19,
+        "precinctsIn": 8,
+        "pctPrecIn": 42.1,
+        "pctExpVote": 0.0,
+        "totalVote": 1151,
+        "ts": "2025-10-24T17:52:01.143Z",
+        "candidates": [
+          { "vote": 649, "pct": 56.4, "id": 2 },
+          { "vote": 502, "pct": 43.6, "id": 3 }
+        ]
+      },
+      {
+        "name": "Contra Costa",
+        "color": "#FF6600",
+        "fips": "6013",
+        "precinctsOf": 930,
+        "precinctsIn": 550,
+        "pctPrecIn": 59.1,
+        "pctExpVote": 0.0,
+        "totalVote": 128660,
+        "ts": "2025-10-24T18:09:48.97Z",
+        "candidates": [
+          { "vote": 66973, "pct": 52.1, "id": 3 },
+          { "vote": 61687, "pct": 47.9, "id": 2 }
+        ]
+      },
+      {
+        "name": "Del Norte",
+        "color": "#FF6600",
+        "fips": "6015",
+        "precinctsOf": 19,
+        "precinctsIn": 12,
+        "pctPrecIn": 63.2,
+        "pctExpVote": 0.0,
+        "totalVote": 2786,
+        "ts": "2025-10-24T18:09:57.14Z",
+        "candidates": [
+          { "vote": 1884, "pct": 67.6, "id": 3 },
+          { "vote": 902, "pct": 32.4, "id": 2 }
+        ]
+      },
+      {
+        "name": "El Dorado",
+        "color": "#FF6600",
+        "fips": "6017",
+        "precinctsOf": 108,
+        "precinctsIn": 75,
+        "pctPrecIn": 69.4,
+        "pctExpVote": 0.0,
+        "totalVote": 31102,
+        "ts": "2025-10-24T18:13:26.757Z",
+        "candidates": [
+          { "vote": 15994, "pct": 51.4, "id": 3 },
+          { "vote": 15108, "pct": 48.6, "id": 2 }
+        ]
+      },
+      {
+        "name": "Fresno",
+        "color": "#187F99",
+        "fips": "6019",
+        "precinctsOf": 231,
+        "precinctsIn": 114,
+        "pctPrecIn": 49.4,
+        "pctExpVote": 0.0,
+        "totalVote": 69013,
+        "ts": "2025-10-24T18:07:59.907Z",
+        "candidates": [
+          { "vote": 35615, "pct": 51.6, "id": 2 },
+          { "vote": 33398, "pct": 48.4, "id": 3 }
+        ]
+      },
+      {
+        "name": "Glenn",
+        "color": "#187F99",
+        "fips": "6021",
+        "precinctsOf": 110,
+        "precinctsIn": 63,
+        "pctPrecIn": 57.3,
+        "pctExpVote": 0.0,
+        "totalVote": 2434,
+        "ts": "2025-10-24T18:19:59.15Z",
+        "candidates": [
+          { "vote": 1294, "pct": 53.2, "id": 2 },
+          { "vote": 1140, "pct": 46.8, "id": 3 }
+        ]
+      },
+      {
+        "name": "Humboldt",
+        "color": "#FF6600",
+        "fips": "6023",
+        "precinctsOf": 106,
+        "precinctsIn": 43,
+        "pctPrecIn": 40.6,
+        "pctExpVote": 0.0,
+        "totalVote": 11135,
+        "ts": "2025-10-24T18:11:37.873Z",
+        "candidates": [
+          { "vote": 6666, "pct": 59.9, "id": 3 },
+          { "vote": 4469, "pct": 40.1, "id": 2 }
+        ]
+      },
+      {
+        "name": "Imperial",
+        "color": "#187F99",
+        "fips": "6025",
+        "precinctsOf": 280,
+        "precinctsIn": 103,
+        "pctPrecIn": 36.8,
+        "pctExpVote": 0.0,
+        "totalVote": 8289,
+        "ts": "2025-10-24T18:09:48.97Z",
+        "candidates": [
+          { "vote": 4343, "pct": 52.4, "id": 2 },
+          { "vote": 3946, "pct": 47.6, "id": 3 }
+        ]
+      },
+      {
+        "name": "Inyo",
+        "color": "#FF6600",
+        "fips": "6027",
+        "precinctsOf": 11,
+        "precinctsIn": 5,
+        "pctPrecIn": 45.5,
+        "pctExpVote": 0.0,
+        "totalVote": 1666,
+        "ts": "2025-10-24T18:09:05.44Z",
+        "candidates": [
+          { "vote": 900, "pct": 54.0, "id": 3 },
+          { "vote": 766, "pct": 46.0, "id": 2 }
+        ]
+      },
+      {
+        "name": "Kern",
+        "color": "#187F99",
+        "fips": "6029",
+        "precinctsOf": 846,
+        "precinctsIn": 379,
+        "pctPrecIn": 44.8,
+        "pctExpVote": 0.0,
+        "totalVote": 54740,
+        "ts": "2025-10-24T18:15:22.58Z",
+        "candidates": [
+          { "vote": 31191, "pct": 57.0, "id": 2 },
+          { "vote": 23549, "pct": 43.0, "id": 3 }
+        ]
+      },
+      {
+        "name": "Kings",
+        "color": "#187F99",
+        "fips": "6031",
+        "precinctsOf": 33,
+        "precinctsIn": 20,
+        "pctPrecIn": 60.6,
+        "pctExpVote": 0.0,
+        "totalVote": 10545,
+        "ts": "2025-10-24T18:11:37.873Z",
+        "candidates": [
+          { "vote": 5651, "pct": 53.6, "id": 2 },
+          { "vote": 4894, "pct": 46.4, "id": 3 }
+        ]
+      },
+      {
+        "name": "Lake",
+        "color": "#187F99",
+        "fips": "6033",
+        "precinctsOf": 38,
+        "precinctsIn": 8,
+        "pctPrecIn": 21.1,
+        "pctExpVote": 0.0,
+        "totalVote": 2394,
+        "ts": "2025-10-24T18:02:55.09Z",
+        "candidates": [
+          { "vote": 1222, "pct": 51.0, "id": 2 },
+          { "vote": 1172, "pct": 49.0, "id": 3 }
+        ]
+      },
+      {
+        "name": "Lassen",
+        "color": "#FF6600",
+        "fips": "6035",
+        "precinctsOf": 52,
+        "precinctsIn": 34,
+        "pctPrecIn": 65.4,
+        "pctExpVote": 0.0,
+        "totalVote": 3076,
+        "ts": "2025-10-24T18:14:32.303Z",
+        "candidates": [
+          { "vote": 1872, "pct": 60.9, "id": 3 },
+          { "vote": 1204, "pct": 39.1, "id": 2 }
+        ]
+      },
+      {
+        "name": "Los Angeles",
+        "color": "#FF6600",
+        "fips": "6037",
+        "precinctsOf": 1502,
+        "precinctsIn": 840,
+        "pctPrecIn": 55.9,
+        "pctExpVote": 0.0,
+        "totalVote": 794987,
+        "ts": "2025-10-24T18:20:07.453Z",
+        "candidates": [
+          { "vote": 438021, "pct": 55.1, "id": 3 },
+          { "vote": 356966, "pct": 44.9, "id": 2 }
+        ]
+      },
+      {
+        "name": "Madera",
+        "color": "#FF6600",
+        "fips": "6039",
+        "precinctsOf": 38,
+        "precinctsIn": 22,
+        "pctPrecIn": 57.9,
+        "pctExpVote": 0.0,
+        "totalVote": 12643,
+        "ts": "2025-10-24T18:13:26.757Z",
+        "candidates": [
+          { "vote": 6564, "pct": 51.9, "id": 3 },
+          { "vote": 6079, "pct": 48.1, "id": 2 }
+        ]
+      },
+      {
+        "name": "Marin",
+        "color": "#FF6600",
+        "fips": "6041",
+        "precinctsOf": 58,
+        "precinctsIn": 34,
+        "pctPrecIn": 58.6,
+        "pctExpVote": 0.0,
+        "totalVote": 35812,
+        "ts": "2025-10-24T18:15:37.623Z",
+        "candidates": [
+          { "vote": 21679, "pct": 60.5, "id": 3 },
+          { "vote": 14133, "pct": 39.5, "id": 2 }
+        ]
+      },
+      {
+        "name": "Mariposa",
+        "color": "#FF6600",
+        "fips": "6043",
+        "precinctsOf": 27,
+        "precinctsIn": 24,
+        "pctPrecIn": 88.9,
+        "pctExpVote": 0.0,
+        "totalVote": 3337,
+        "ts": "2025-10-24T18:17:15.24Z",
+        "candidates": [
+          { "vote": 1777, "pct": 53.3, "id": 3 },
+          { "vote": 1560, "pct": 46.7, "id": 2 }
+        ]
+      },
+      {
+        "name": "Mendocino",
+        "color": "#FF6600",
+        "fips": "6045",
+        "precinctsOf": 245,
+        "precinctsIn": 98,
+        "pctPrecIn": 40.0,
+        "pctExpVote": 0.0,
+        "totalVote": 6156,
+        "ts": "2025-10-24T18:11:37.873Z",
+        "candidates": [
+          { "vote": 3482, "pct": 56.6, "id": 3 },
+          { "vote": 2674, "pct": 43.4, "id": 2 }
+        ]
+      },
+      {
+        "name": "Merced",
+        "color": "#FF6600",
+        "fips": "6047",
+        "precinctsOf": 729,
+        "precinctsIn": 238,
+        "pctPrecIn": 32.6,
+        "pctExpVote": 0.0,
+        "totalVote": 11866,
+        "ts": "2025-10-24T18:06:11.027Z",
+        "candidates": [
+          { "vote": 6017, "pct": 50.7, "id": 3 },
+          { "vote": 5849, "pct": 49.3, "id": 2 }
+        ]
+      },
+      {
+        "name": "Modoc",
+        "color": "#FF6600",
+        "fips": "6049",
+        "precinctsOf": 21,
+        "precinctsIn": 18,
+        "pctPrecIn": 85.7,
+        "pctExpVote": 0.0,
+        "totalVote": 1425,
+        "ts": "2025-10-24T18:15:05.67Z",
+        "candidates": [
+          { "vote": 898, "pct": 63.0, "id": 3 },
+          { "vote": 527, "pct": 37.0, "id": 2 }
+        ]
+      },
+      {
+        "name": "Mono",
+        "color": "#FF6600",
+        "fips": "6051",
+        "precinctsOf": 12,
+        "precinctsIn": 7,
+        "pctPrecIn": 58.3,
+        "pctExpVote": 0.0,
+        "totalVote": 1577,
+        "ts": "2025-10-24T18:10:54.31Z",
+        "candidates": [
+          { "vote": 888, "pct": 56.3, "id": 3 },
+          { "vote": 689, "pct": 43.7, "id": 2 }
+        ]
+      },
+      {
+        "name": "Monterey",
+        "color": "#FF6600",
+        "fips": "6053",
+        "precinctsOf": 171,
+        "precinctsIn": 97,
+        "pctPrecIn": 56.7,
+        "pctExpVote": 0.0,
+        "totalVote": 35750,
+        "ts": "2025-10-24T18:18:53.77Z",
+        "candidates": [
+          { "vote": 17970, "pct": 50.3, "id": 3 },
+          { "vote": 17780, "pct": 49.7, "id": 2 }
+        ]
+      },
+      {
+        "name": "Napa",
+        "color": "#FF6600",
+        "fips": "6055",
+        "precinctsOf": 205,
+        "precinctsIn": 72,
+        "pctPrecIn": 35.1,
+        "pctExpVote": 0.0,
+        "totalVote": 9580,
+        "ts": "2025-10-24T18:06:11.027Z",
+        "candidates": [
+          { "vote": 5250, "pct": 54.8, "id": 3 },
+          { "vote": 4330, "pct": 45.2, "id": 2 }
+        ]
+      },
+      {
+        "name": "Nevada",
+        "color": "#FF6600",
+        "fips": "6057",
+        "precinctsOf": 102,
+        "precinctsIn": 20,
+        "pctPrecIn": 19.6,
+        "pctExpVote": 0.0,
+        "totalVote": 5196,
+        "ts": "2025-10-24T18:07:59.907Z",
+        "candidates": [
+          { "vote": 3158, "pct": 60.8, "id": 3 },
+          { "vote": 2038, "pct": 39.2, "id": 2 }
+        ]
+      },
+      {
+        "name": "Orange",
+        "color": "#187F99",
+        "fips": "6059",
+        "precinctsOf": 2298,
+        "precinctsIn": 1402,
+        "pctPrecIn": 61.0,
+        "pctExpVote": 0.0,
+        "totalVote": 334217,
+        "ts": "2025-10-24T18:18:10.267Z",
+        "candidates": [
+          { "vote": 177784, "pct": 53.2, "id": 2 },
+          { "vote": 156433, "pct": 46.8, "id": 3 }
+        ]
+      },
+      {
+        "name": "Placer",
+        "color": "#FF6600",
+        "fips": "6061",
+        "precinctsOf": 95,
+        "precinctsIn": 49,
+        "pctPrecIn": 51.6,
+        "pctExpVote": 0.0,
+        "totalVote": 48070,
+        "ts": "2025-10-24T18:13:26.757Z",
+        "candidates": [
+          { "vote": 28983, "pct": 60.3, "id": 3 },
+          { "vote": 19087, "pct": 39.7, "id": 2 }
+        ]
+      },
+      {
+        "name": "Plumas",
+        "color": "#FF6600",
+        "fips": "6063",
+        "precinctsOf": 29,
+        "precinctsIn": 24,
+        "pctPrecIn": 82.8,
+        "pctExpVote": 0.0,
+        "totalVote": 3470,
+        "ts": "2025-10-24T17:53:06.827Z",
+        "candidates": [
+          { "vote": 2049, "pct": 59.0, "id": 3 },
+          { "vote": 1421, "pct": 41.0, "id": 2 }
+        ]
+      },
+      {
+        "name": "Riverside",
+        "color": "#187F99",
+        "fips": "6065",
+        "precinctsOf": 921,
+        "precinctsIn": 452,
+        "pctPrecIn": 49.1,
+        "pctExpVote": 0.0,
+        "totalVote": 192113,
+        "ts": "2025-10-24T18:18:10.267Z",
+        "candidates": [
+          { "vote": 106677, "pct": 55.5, "id": 2 },
+          { "vote": 85436, "pct": 44.5, "id": 3 }
+        ]
+      },
+      {
+        "name": "Sacramento",
+        "color": "#187F99",
+        "fips": "6067",
+        "precinctsOf": 609,
+        "precinctsIn": 267,
+        "pctPrecIn": 43.8,
+        "pctExpVote": 0.0,
+        "totalVote": 114088,
+        "ts": "2025-10-24T18:07:16.39Z",
+        "candidates": [
+          { "vote": 60201, "pct": 52.8, "id": 2 },
+          { "vote": 53887, "pct": 47.2, "id": 3 }
+        ]
+      },
+      {
+        "name": "San Benito",
+        "color": "#187F99",
+        "fips": "6069",
+        "precinctsOf": 30,
+        "precinctsIn": 14,
+        "pctPrecIn": 46.7,
+        "pctExpVote": 0.0,
+        "totalVote": 5454,
+        "ts": "2025-10-24T18:18:53.77Z",
+        "candidates": [
+          { "vote": 2801, "pct": 51.4, "id": 2 },
+          { "vote": 2653, "pct": 48.6, "id": 3 }
+        ]
+      },
+      {
+        "name": "San Bernardino",
+        "color": "#187F99",
+        "fips": "6071",
+        "precinctsOf": 2018,
+        "precinctsIn": 807,
+        "pctPrecIn": 40.0,
+        "pctExpVote": 0.0,
+        "totalVote": 120766,
+        "ts": "2025-10-24T18:04:43.987Z",
+        "candidates": [
+          { "vote": 65848, "pct": 54.5, "id": 2 },
+          { "vote": 54918, "pct": 45.5, "id": 3 }
+        ]
+      },
+      {
+        "name": "San Diego",
+        "color": "#187F99",
+        "fips": "6073",
+        "precinctsOf": 1754,
+        "precinctsIn": 1017,
+        "pctPrecIn": 58.0,
+        "pctExpVote": 0.0,
+        "totalVote": 358223,
+        "ts": "2025-10-24T18:11:39.133Z",
+        "candidates": [
+          { "vote": 193560, "pct": 54.0, "id": 2 },
+          { "vote": 164663, "pct": 46.0, "id": 3 }
+        ]
+      },
+      {
+        "name": "San Francisco",
+        "color": "#FF6600",
+        "fips": "6075",
+        "precinctsOf": 108,
+        "precinctsIn": 62,
+        "pctPrecIn": 57.4,
+        "pctExpVote": 0.0,
+        "totalVote": 90976,
+        "ts": "2025-10-24T18:20:09.503Z",
+        "candidates": [
+          { "vote": 49032, "pct": 53.9, "id": 3 },
+          { "vote": 41944, "pct": 46.1, "id": 2 }
+        ]
+      },
+      {
+        "name": "San Joaquin",
+        "color": "#187F99",
+        "fips": "6077",
+        "precinctsOf": 240,
+        "precinctsIn": 115,
+        "pctPrecIn": 47.9,
+        "pctExpVote": 0.0,
+        "totalVote": 50874,
+        "ts": "2025-10-24T18:18:32.937Z",
+        "candidates": [
+          { "vote": 25626, "pct": 50.4, "id": 2 },
+          { "vote": 25248, "pct": 49.6, "id": 3 }
+        ]
+      },
+      {
+        "name": "San Luis Obispo",
+        "color": "#187F99",
+        "fips": "6079",
+        "precinctsOf": 93,
+        "precinctsIn": 47,
+        "pctPrecIn": 50.5,
+        "pctExpVote": 0.0,
+        "totalVote": 32351,
+        "ts": "2025-10-24T18:06:11.027Z",
+        "candidates": [
+          { "vote": 16912, "pct": 52.3, "id": 2 },
+          { "vote": 15439, "pct": 47.7, "id": 3 }
+        ]
+      },
+      {
+        "name": "San Mateo",
+        "color": "#FF6600",
+        "fips": "6081",
+        "precinctsOf": 246,
+        "precinctsIn": 138,
+        "pctPrecIn": 56.1,
+        "pctExpVote": 0.0,
+        "totalVote": 72022,
+        "ts": "2025-10-24T18:18:10.267Z",
+        "candidates": [
+          { "vote": 41924, "pct": 58.2, "id": 3 },
+          { "vote": 30098, "pct": 41.8, "id": 2 }
+        ]
+      },
+      {
+        "name": "Santa Barbara",
+        "color": "#FF6600",
+        "fips": "6083",
+        "precinctsOf": 141,
+        "precinctsIn": 80,
+        "pctPrecIn": 56.7,
+        "pctExpVote": 0.0,
+        "totalVote": 43170,
+        "ts": "2025-10-24T18:09:48.97Z",
+        "candidates": [
+          { "vote": 22698, "pct": 52.6, "id": 3 },
+          { "vote": 20472, "pct": 47.4, "id": 2 }
+        ]
+      },
+      {
+        "name": "Santa Clara",
+        "color": "#FF6600",
+        "fips": "6085",
+        "precinctsOf": 579,
+        "precinctsIn": 331,
+        "pctPrecIn": 57.2,
+        "pctExpVote": 0.0,
+        "totalVote": 176985,
+        "ts": "2025-10-24T18:16:21.163Z",
+        "candidates": [
+          { "vote": 93916, "pct": 53.1, "id": 3 },
+          { "vote": 83069, "pct": 46.9, "id": 2 }
+        ]
+      },
+      {
+        "name": "Santa Cruz",
+        "color": "#FF6600",
+        "fips": "6087",
+        "precinctsOf": 118,
+        "precinctsIn": 73,
+        "pctPrecIn": 61.9,
+        "pctExpVote": 0.0,
+        "totalVote": 33031,
+        "ts": "2025-10-24T18:09:05.44Z",
+        "candidates": [
+          { "vote": 18661, "pct": 56.5, "id": 3 },
+          { "vote": 14370, "pct": 43.5, "id": 2 }
+        ]
+      },
+      {
+        "name": "Shasta",
+        "color": "#187F99",
+        "fips": "6089",
+        "precinctsOf": 68,
+        "precinctsIn": 6,
+        "pctPrecIn": 8.8,
+        "pctExpVote": 0.0,
+        "totalVote": 3075,
+        "ts": "2025-10-24T18:19:59.15Z",
+        "candidates": [
+          { "vote": 1579, "pct": 51.3, "id": 2 },
+          { "vote": 1496, "pct": 48.7, "id": 3 }
+        ]
+      },
+      {
+        "name": "Sierra",
+        "color": "#FF6600",
+        "fips": "6091",
+        "precinctsOf": 19,
+        "precinctsIn": 17,
+        "pctPrecIn": 89.5,
+        "pctExpVote": 0.0,
+        "totalVote": 649,
+        "ts": "2025-10-24T17:54:53.363Z",
+        "candidates": [
+          { "vote": 412, "pct": 63.5, "id": 3 },
+          { "vote": 237, "pct": 36.5, "id": 2 }
+        ]
+      },
+      {
+        "name": "Siskiyou",
+        "color": "#FF6600",
+        "fips": "6093",
+        "precinctsOf": 60,
+        "precinctsIn": 38,
+        "pctPrecIn": 63.3,
+        "pctExpVote": 0.0,
+        "totalVote": 5753,
+        "ts": "2025-10-24T18:06:11.027Z",
+        "candidates": [
+          { "vote": 3204, "pct": 55.7, "id": 3 },
+          { "vote": 2549, "pct": 44.3, "id": 2 }
+        ]
+      },
+      {
+        "name": "Solano",
+        "color": "#FF6600",
+        "fips": "6095",
+        "precinctsOf": 159,
+        "precinctsIn": 98,
+        "pctPrecIn": 61.6,
+        "pctExpVote": 0.0,
+        "totalVote": 47159,
+        "ts": "2025-10-24T18:15:58.847Z",
+        "candidates": [
+          { "vote": 24067, "pct": 51.0, "id": 3 },
+          { "vote": 23092, "pct": 49.0, "id": 2 }
+        ]
+      },
+      {
+        "name": "Sonoma",
+        "color": "#FF6600",
+        "fips": "6097",
+        "precinctsOf": 390,
+        "precinctsIn": 226,
+        "pctPrecIn": 57.9,
+        "pctExpVote": 0.0,
+        "totalVote": 61211,
+        "ts": "2025-10-24T18:20:42.667Z",
+        "candidates": [
+          { "vote": 37235, "pct": 60.8, "id": 3 },
+          { "vote": 23976, "pct": 39.2, "id": 2 }
+        ]
+      },
+      {
+        "name": "Stanislaus",
+        "color": "#187F99",
+        "fips": "6099",
+        "precinctsOf": 88,
+        "precinctsIn": 40,
+        "pctPrecIn": 45.5,
+        "pctExpVote": 0.0,
+        "totalVote": 36714,
+        "ts": "2025-10-24T18:20:30.337Z",
+        "candidates": [
+          { "vote": 19958, "pct": 54.4, "id": 2 },
+          { "vote": 16756, "pct": 45.6, "id": 3 }
+        ]
+      },
+      {
+        "name": "Sutter",
+        "color": "#187F99",
+        "fips": "6101",
+        "precinctsOf": 24,
+        "precinctsIn": 13,
+        "pctPrecIn": 54.2,
+        "pctExpVote": 0.0,
+        "totalVote": 8148,
+        "ts": "2025-10-24T18:20:42.667Z",
+        "candidates": [
+          { "vote": 4420, "pct": 54.2, "id": 2 },
+          { "vote": 3728, "pct": 45.8, "id": 3 }
+        ]
+      },
+      {
+        "name": "Tehama",
+        "color": "#FF6600",
+        "fips": "6103",
+        "precinctsOf": 29,
+        "precinctsIn": 12,
+        "pctPrecIn": 41.4,
+        "pctExpVote": 0.0,
+        "totalVote": 4500,
+        "ts": "2025-10-24T18:07:59.907Z",
+        "candidates": [
+          { "vote": 2283, "pct": 50.7, "id": 3 },
+          { "vote": 2217, "pct": 49.3, "id": 2 }
+        ]
+      },
+      {
+        "name": "Trinity",
+        "color": "#FF6600",
+        "fips": "6105",
+        "precinctsOf": 9,
+        "precinctsIn": 6,
+        "pctPrecIn": 66.7,
+        "pctExpVote": 0.0,
+        "totalVote": 1551,
+        "ts": "2025-10-24T18:20:35.28Z",
+        "candidates": [
+          { "vote": 934, "pct": 60.2, "id": 3 },
+          { "vote": 617, "pct": 39.8, "id": 2 }
+        ]
+      },
+      {
+        "name": "Tulare",
+        "color": "#FF6600",
+        "fips": "6107",
+        "precinctsOf": 147,
+        "precinctsIn": 69,
+        "pctPrecIn": 46.9,
+        "pctExpVote": 0.0,
+        "totalVote": 26903,
+        "ts": "2025-10-24T18:18:53.77Z",
+        "candidates": [
+          { "vote": 13503, "pct": 50.2, "id": 3 },
+          { "vote": 13400, "pct": 49.8, "id": 2 }
+        ]
+      },
+      {
+        "name": "Tuolumne",
+        "color": "#187F99",
+        "fips": "6109",
+        "precinctsOf": 42,
+        "precinctsIn": 34,
+        "pctPrecIn": 81.0,
+        "pctExpVote": 0.0,
+        "totalVote": 9348,
+        "ts": "2025-10-24T18:09:05.44Z",
+        "candidates": [
+          { "vote": 5003, "pct": 53.5, "id": 2 },
+          { "vote": 4345, "pct": 46.5, "id": 3 }
+        ]
+      },
+      {
+        "name": "Ventura",
+        "color": "#187F99",
+        "fips": "6111",
+        "precinctsOf": 1419,
+        "precinctsIn": 852,
+        "pctPrecIn": 60.0,
+        "pctExpVote": 0.0,
+        "totalVote": 91411,
+        "ts": "2025-10-24T18:13:26.757Z",
+        "candidates": [
+          { "vote": 47415, "pct": 51.9, "id": 2 },
+          { "vote": 43996, "pct": 48.1, "id": 3 }
+        ]
+      },
+      {
+        "name": "Yolo",
+        "color": "#FF6600",
+        "fips": "6113",
+        "precinctsOf": 35,
+        "precinctsIn": 17,
+        "pctPrecIn": 48.6,
+        "pctExpVote": 0.0,
+        "totalVote": 18260,
+        "ts": "2025-10-24T18:09:05.44Z",
+        "candidates": [
+          { "vote": 10591, "pct": 58.0, "id": 3 },
+          { "vote": 7669, "pct": 42.0, "id": 2 }
+        ]
+      },
+      {
+        "name": "Yuba",
+        "color": "#FF6600",
+        "fips": "6115",
+        "precinctsOf": 32,
+        "precinctsIn": 14,
+        "pctPrecIn": 43.8,
+        "pctExpVote": 0.0,
+        "totalVote": 5430,
+        "ts": "2025-10-24T18:18:10.267Z",
+        "candidates": [
+          { "vote": 2822, "pct": 52.0, "id": 3 },
+          { "vote": 2608, "pct": 48.0, "id": 2 }
+        ]
+      }
+    ],
+    "candidates": [
+      {
+        "raceCandidateId": 131061,
+        "color": "#FF6600",
+        "party": "NO",
+        "lastName": "No",
+        "fullName": " No",
+        "id": 3
+      },
+      {
+        "raceCandidateId": 131060,
+        "color": "#187F99",
+        "party": "YS",
+        "lastName": "Yes",
+        "fullName": " Yes",
+        "id": 2
+      }
+    ]
+  }
+}
