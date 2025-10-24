@@ -85,7 +85,8 @@
             border-radius: 4px !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
             padding: 12px !important;
-            max-width: 450px !important;
+            max-width: 460px !important;
+            width: 230px;
             /* animation: popupFadeIn 0.2s ease-out; */
         }
 
@@ -105,7 +106,7 @@
         }
 
         /* POPUP STYLES */
-        .boroName {
+        .countyName {
             font-family: "TTNorms Pro Bold", sans-serif;
             font-size: 16px;
             margin-bottom: 0.5rem;
@@ -124,13 +125,13 @@
 
 <body>
     <div id="container">
-        <div class="title">New York City Mayoral Election</div>
-        <p class="description">Election results by borough for the 2025 NYC mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
+        <div class="title">Virginia Gubernatorial Election</div>
+        <p class="description">Election results by county and independent city for the 2025 Virginia gubernatorial race. Click on each county to see detailed vote counts and leading candidates.
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
         <div class="source">
-            Map: Taylor Johnston / CBS News • Source: CBS News election data
+            Map: Taylor Johnston / CBS News • Source: CBS News election data, Virginia Geographic Information Network
         </div>
     </div>
 
@@ -140,19 +141,16 @@
         const initialZoom = isMobile ? 2 : 2.5;
         let pymChild;
 
-        // Update interaction text for click-only behavior
-        const interactionText = document.getElementById('interaction-text');
-        interactionText.textContent = 'Click on each borough to see detailed vote counts and leading candidates.';
+
 
         const map = new maplibregl.Map({
             container: "map",
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
-            center: [-73.94, 40.70],
-            zoom: 9.5,
-            minZoom: 9,
-            maxZoom: 15,
-            attributionControl: false
-        });
+            center: [-79.434, 37.695],
+            zoom: 5.9,
+            minZoom: 5.9,
+            maxZoom: 12,
+            attributionControl: false});
 
         map.scrollZoom.disable();
         map.addControl(new maplibregl.NavigationControl(), "top-left");
@@ -174,24 +172,36 @@
                 }
             });
 
-            // Load NYC borough shapefile
-            const boroughsResponse = await fetch("shapefiles/nyc-boroughs.json");
-            const boroughsData = await boroughsResponse.json();
+            // Load Virginia counties shapefile
+            const countiesResponse = await fetch("shapefiles/va-counties.json");
+            const countiesData = await countiesResponse.json();
 
-            // Load NY mayor election data
-            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-ny-mayor.json");
+            // Load Virginia governor election data
+            const electionResponse = await fetch("data/geo-va-gov.json");
             const electionData = await electionResponse.json();
 
-            // Create a mapping of borough names to election data
-            const electionByBorough = {};
+            // Create a mapping of county names to election data
+            const electionByCounty = {};
             electionData.race.counties.forEach(county => {
-                electionByBorough[county.name] = county;
+                electionByCounty[county.name.toUpperCase()] = county;
             });
 
-            // Add color property to borough features based on election data
-            boroughsData.features.forEach(feature => {
-                const boroughName = feature.properties.BoroName;
-                const electionInfo = electionByBorough[boroughName];
+            // Add color property to county features based on election data
+            countiesData.features.forEach(feature => {
+                const countyName = feature.properties.NAME;
+                const namelsad = feature.properties.NAMELSAD;
+                
+                // Create a unique identifier that distinguishes Fairfax County from Fairfax City
+                const uniqueId = namelsad.includes('City') ? namelsad : countyName;
+                feature.properties.uniqueId = uniqueId;
+                
+                let electionInfo = electionByCounty[uniqueId.toUpperCase()];
+                
+                // If no direct match, try fallback patterns
+                if (!electionInfo) {
+                    electionInfo = electionByCounty[countyName.toUpperCase()];
+                }
+                
                 if (electionInfo) {
                     feature.properties.color = electionInfo.color;
                     // Create a darker version of the color for the outline
@@ -209,15 +219,15 @@
                 }
             });
 
-            map.addSource("boroughs", {
+            map.addSource("counties", {
                 type: "geojson",
-                data: boroughsData
+                data: countiesData
             });
 
             map.addLayer({
-                id: "boroughs-fill",
+                id: "counties-fill",
                 type: "fill",
-                source: "boroughs",
+                source: "counties",
                 paint: {
                     "fill-color": ["get", "color"],
                     "fill-opacity": 0.8
@@ -225,9 +235,9 @@
             });
 
             map.addLayer({
-                id: "boroughs-outline",
+                id: "counties-outline",
                 type: "line",
-                source: "boroughs",
+                source: "counties",
                 paint: {
                     "line-color": ["get", "outlineColor"],
                     "line-width": 0.1
@@ -236,22 +246,28 @@
 
             // Add hover highlight layer
             map.addLayer({
-                id: "boroughs-hover",
+                id: "counties-hover",
                 type: "line",
-                source: "boroughs",
+                source: "counties",
                 paint: {
                     "line-color": "#000000",
                     "line-width": 1.5
                 },
-                filter: ["==", "BoroName", ""]
+                filter: ["==", "uniqueId", ""]
             });
 
-            let hoveredBoroughId = null;
-            let clickedBoroughId = null;
+            let hoveredCountyId = null;
+            let clickedCountyId = null;
 
             // Shared function to show tooltip
-            function showTooltip(e, boroughName, electionInfo) {
-                // Format timestamp for this borough
+            function showTooltip(e, countyName, electionInfo) {
+                // Format county name properly - use NAME for display
+                const namelsad = e.features[0].properties.NAMELSAD;
+                const isCity = namelsad.includes('City');
+                const properCaseBase = countyName.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+                const displayName = isCity ? properCaseBase : properCaseBase + ' County';
+
+                // Format timestamp for this county
                 let timestampText = '';
                 if (electionInfo.ts) {
                     const timestamp = new Date(electionInfo.ts);
@@ -292,11 +308,11 @@
                 });
 
                 const html = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <div class="boroName" style="margin-bottom: 0;">${boroughName}</div>
-                        <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                        <div class="countyName" style="margin-bottom: 0; flex: 1; margin-right: 10px; line-height: 1.2;">${displayName}</div>
+                        <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
                             <span style="font-size: 14px; color: #767676;">${electionInfo.pctPrecIn}% in</span>
-                            <div style="width: 40px; height: 12px; background-color: #767676; border-radius: 9px; overflow: hidden;">
+                            <div style="width: 40px; height: 12px; background-color: #e0e0e0; border-radius: 9px; overflow: hidden;">
                                 <div style="width: ${electionInfo.pctPrecIn}%; height: 100%; background-color: #767676; transition: width 0.3s ease;"></div>
                             </div>
                         </div>
@@ -304,8 +320,8 @@
                     <table style="width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed;">
                         <thead>
                             <tr style="border-bottom: 1px solid #ccc;">
-                                <th style="text-align: left; color: #5F5F5F; width: 60%; font-weight: 400; padding: 2px 8px 2px 0;">Candidate</th>
-                                <th style="text-align: right; color: #5F5F5F; width:15%; font-weight: 400; padding: 2px 4px;">Votes</th>
+                                <th style="text-align: left; color: #5F5F5F; width: 65%; font-weight: 400; padding: 2px 8px 2px 0;">Candidate</th>
+                                <th style="text-align: right; color: #5F5F5F; width:10%; font-weight: 400; padding: 2px 4px;">Votes</th>
                                 <th style="text-align: right; color: #5F5F5F; width: 25%; font-weight: 400; padding: 2px 0 2px 8px;">Percent</th>
                             </tr>
                         </thead>
@@ -322,23 +338,30 @@
             }
 
             // Click to show/hide tooltip (for all devices)
-            map.on("click", "boroughs-fill", (e) => {
+            map.on("click", "counties-fill", (e) => {
                 const props = e.features[0].properties;
-                const boroughName = props.BoroName;
-                const electionInfo = electionByBorough[boroughName];
+                const countyName = props.NAME;
+                const uniqueId = props.uniqueId;
                 
-                if (clickedBoroughId === boroughName) {
-                    // Clicking same borough - hide tooltip
-                    clickedBoroughId = null;
+                let electionInfo = electionByCounty[uniqueId.toUpperCase()];
+                
+                // If no direct match, try fallback patterns
+                if (!electionInfo) {
+                    electionInfo = electionByCounty[countyName.toUpperCase()];
+                }
+                
+                if (clickedCountyId === uniqueId) {
+                    // Clicking same county - hide tooltip
+                    clickedCountyId = null;
                     popup.remove();
-                    map.setFilter("boroughs-hover", ["==", "BoroName", ""]);
+                    map.setFilter("counties-hover", ["==", "uniqueId", ""]);
                 } else {
-                    // Clicking new borough - show tooltip
-                    clickedBoroughId = boroughName;
-                    map.setFilter("boroughs-hover", ["==", "BoroName", boroughName]);
+                    // Clicking new county - show tooltip
+                    clickedCountyId = uniqueId;
+                    map.setFilter("counties-hover", ["==", "uniqueId", uniqueId]);
                     
                     if (electionInfo) {
-                        showTooltip(e, boroughName, electionInfo);
+                        showTooltip(e, countyName, electionInfo);
                     }
                 }
                 map.getCanvas().style.cursor = "pointer";
@@ -348,13 +371,13 @@
             // Hide tooltip when clicking elsewhere
             map.on("click", (e) => {
                 const features = map.queryRenderedFeatures(e.point, {
-                    layers: ["boroughs-fill"]
+                    layers: ["counties-fill"]
                 });
                 
                 if (features.length === 0) {
-                    clickedBoroughId = null;
+                    clickedCountyId = null;
                     popup.remove();
-                    map.setFilter("boroughs-hover", ["==", "BoroName", ""]);
+                    map.setFilter("counties-hover", ["==", "uniqueId", ""]);
                 }
             });
 

@@ -124,7 +124,7 @@
 <body>
     <div id="container">
         <div class="title">New York City Mayoral Election</div>
-        <p class="description">Election results by borough for the 2025 NYC mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
+        <p class="description">Election results by borough for the 2025 New York City mayoral race. <span id="interaction-text">Hover over each borough to see detailed vote counts and leading candidates.</span></p>
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
@@ -178,7 +178,7 @@
             const boroughsData = await boroughsResponse.json();
 
             // Load NY mayor election data
-            const electionResponse = await fetch("https://cbs-news-data.github.io/election-2025-maps/data/geo-ny-mayor.json");
+            const electionResponse = await fetch("data/geo-ny-mayor.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of borough names to election data
@@ -295,7 +295,7 @@
                         <div class="boroName" style="margin-bottom: 0;">${boroughName}</div>
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 14px; color: #767676;">${electionInfo.pctPrecIn}% in</span>
-                            <div style="width: 40px; height: 12px; background-color: #767676; border-radius: 9px; overflow: hidden;">
+                            <div style="width: 40px; height: 12px; background-color: #e0e0e0; border-radius: 9px; overflow: hidden;">
                                 <div style="width: ${electionInfo.pctPrecIn}%; height: 100%; background-color: #767676; transition: width 0.3s ease;"></div>
                             </div>
                         </div>
