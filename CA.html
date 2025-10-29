@@ -178,7 +178,7 @@
             const countiesData = await countiesResponse.json();
 
             // Load CA proposition election data
-            const electionResponse = await fetch("https://www.cbsnews.com/election-api/2025/geo-ca-prop.json");
+            const electionResponse = await fetch("https://dev-fly.cbsnews.com/election-api/2025/geo-ca-prop.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of county names to election data

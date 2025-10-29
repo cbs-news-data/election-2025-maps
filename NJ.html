@@ -184,7 +184,7 @@
             const countiesData = await countiesResponse.json();
 
             // Load NJ governor election data
-            const electionResponse = await fetch("https://www.cbsnews.com/election-api/2025/geo-nj-gov.json");
+            const electionResponse = await fetch("https://dev-fly.cbsnews.com/election-api/2025/geo-nj-gov.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of county names to election data

@@ -178,7 +178,7 @@
             const boroughsData = await boroughsResponse.json();
 
             // Load NY mayor election data
-            const electionResponse = await fetch("https://www.cbsnews.com/election-api/2025/geo-ny-mayor.json");
+            const electionResponse = await fetch("https://dev-fly.cbsnews.com/election-api/2025/geo-ny-mayor.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of borough names to election data
