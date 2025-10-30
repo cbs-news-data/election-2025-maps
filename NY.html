@@ -140,7 +140,7 @@
 
         @media (max-width: 430px) {
             #map {
-                max-height: 500px !important;
+                max-height: 400px !important;
             }
         }
     </style>
@@ -149,7 +149,7 @@
 <body>
     <div id="container">
         <div class="title">New York City Mayoral Election</div>
-        <p class="description">Election results by borough for the 2025 New York City mayoral race. Click on each borough to see detailed vote counts and leading candidates. <button class="refresh-btn" onclick="window.location.reload()"><i class="fa-sharp fa-solid fa-arrow-rotate-right"></i> Refresh</button> to update the data.
+        <p class="description">Election results by borough for the 2025 New York City mayoral race. Click on each borough to see detailed vote counts and leading candidates. <button class="refresh-btn" onclick="window.location.reload()">Refresh <i class="fa-sharp fa-solid fa-arrow-rotate-right fa-sm"></i></button> to update the data.
         </p>
         <div id="map"></div>
 
@@ -162,7 +162,7 @@
     <script>
         const isMobile = window.innerWidth <= 768;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const initialZoom = isMobile ? 2 : 2.5;
+        const initialZoom = isMobile ? 9 : 9.5
         let pymChild;
 
         const map = new maplibregl.Map({
@@ -170,8 +170,6 @@
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
             center: [-73.94, 40.70],
             zoom: initialZoom,
-            minZoom: 9.5,
-            maxZoom: 15,
             attributionControl: false
         });
 
@@ -200,7 +198,7 @@
             const boroughsData = await boroughsResponse.json();
 
             // Load NY mayor election data
-            const electionResponse = await fetch("https://dev-fly.cbsnews.com/election-api/2025/geo-ny-mayor.json");
+            const electionResponse = await fetch("https://www.cbsnews.com/election-api/2025/geo-ny-mayor.json");
             const electionData = await electionResponse.json();
 
             // Create a mapping of borough names to election data

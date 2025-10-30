@@ -142,7 +142,7 @@
 
         @media (max-width: 430px) {
             #map {
-                max-height: 500px !important;
+                max-height: 400px !important;
             }
         }
     </style>
@@ -151,7 +151,7 @@
 <body>
     <div id="container">
         <div class="title">Virginia Gubernatorial Election</div>
-        <p class="description">Election results by county and independent city for the 2025 Virginia gubernatorial race. Click on each to see detailed vote counts and leading candidates. <button class="refresh-btn" onclick="window.location.reload()"><i class="fa-sharp fa-solid fa-arrow-rotate-right"></i> Refresh</button> to update the data.</p>
+        <p class="description">Election results by county and independent city for the 2025 Virginia gubernatorial race. Click on each to see detailed vote counts and leading candidates. <button class="refresh-btn" onclick="window.location.reload()">Refresh <i class="fa-sharp fa-solid fa-arrow-rotate-right fa-sm"></i></button> to update the data.</p>
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
@@ -163,7 +163,7 @@
     <script>
         const isMobile = window.innerWidth <= 768;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const initialZoom = isMobile ? 2 : 2.5;
+    const initialZoom = isMobile ? 5 : 5.8
         let pymChild;
 
 
@@ -172,8 +172,6 @@
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
             center: [-79.434, 37.695],
             zoom: initialZoom,
-            minZoom: 5.9,
-            maxZoom: 12,
             attributionControl: false
         });
 

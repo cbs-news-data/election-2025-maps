@@ -140,7 +140,7 @@
 
         @media (max-width: 430px) {
             #map {
-                max-height: 500px !important;
+                max-height: 400px !important;
             }
         }
     </style>
@@ -149,7 +149,7 @@
 <body>
     <div id="container">
         <div class="title">New Jersey Gubernatorial Election</div>
-        <p class="description">Election results by county for the 2025 New Jersey gubernatorial race. Click on each county to see detailed vote counts and leading candidates. <button class="refresh-btn" onclick="window.location.reload()"><i class="fa-sharp fa-solid fa-arrow-rotate-right"></i> Refresh</button> to update the data.
+        <p class="description">Election results by county for the 2025 New Jersey gubernatorial race. Click on each county to see detailed vote counts and leading candidates. <button class="refresh-btn" onclick="window.location.reload()">Refresh <i class="fa-sharp fa-solid fa-arrow-rotate-right fa-sm"></i></button> to update the data.
         </p>
         <div id="map"></div>
 
@@ -162,7 +162,7 @@
     <script>
         const isMobile = window.innerWidth <= 768;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const initialZoom = isMobile ? 2 : 2.5;
+    const initialZoom = isMobile ? 6.5 : 7
         let pymChild;
 
         const map = new maplibregl.Map({
@@ -170,8 +170,6 @@
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
             center: [-74.61, 40.152],
             zoom: initialZoom,
-            minZoom: 7,
-            maxZoom: 15,
             attributionControl: false
         });
 

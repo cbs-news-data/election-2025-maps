@@ -140,7 +140,7 @@
 
         @media (max-width: 430px) {
             #map {
-                max-height: 500px !important;
+                max-height: 400px !important;
             }
         }
     </style>
@@ -149,7 +149,7 @@
 <body>
     <div id="container">
         <div class="title">California Special Election</div>
-        <p class="description">Election results by county for the 2025 California special election on redistricting. Click on each county to see detailed vote counts. <button class="refresh-btn" onclick="window.location.reload()"><i class="fa-sharp fa-solid fa-arrow-rotate-right"></i> Refresh</button> to update the data.</p>
+        <p class="description">Election results by county for the 2025 California special election on redistricting. Click on each county to see detailed vote counts. <button class="refresh-btn" onclick="window.location.reload()">Refresh <i class="fa-sharp fa-solid fa-arrow-rotate-right fa-sm"></i></button> to update the data.</p>
         <div id="map"></div>
 
         <!-- <div class="note">Note: Results are populated once at least 20% of the expected votes are tallied.</div> -->
@@ -161,7 +161,7 @@
     <script>
         const isMobile = window.innerWidth <= 768;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const initialZoom = isMobile ? 2 : 2.5;
+    const initialZoom = isMobile ? 4.5 : 5;
         let pymChild;
 
 
@@ -171,8 +171,6 @@
             style: "https://vapi.mc-cdn.io/styles/CTS%20Web%20Data%20Positron.json?access_token=u3Q9ykMVHQIvvHegtpo2qgbyUxXbtw2N9e8983fde25feff58982455e437cb67145892361",
             center: [-119.44, 37.39], // California center
             zoom: initialZoom,
-            minZoom: 5,
-            maxZoom: 10,
             attributionControl: false        });
 
         map.scrollZoom.disable();
