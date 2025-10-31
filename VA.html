@@ -200,7 +200,7 @@
             const countiesData = await countiesResponse.json();
 
             // Load Virginia governor election data
-            const electionResponse = await fetch("https://dev-fly.cbsnews.com/election-api/2025/geo-va-gov.json");
+            const electionResponse = await fetch("https://www.cbsnews.com/election-api/2025/geo-va-gov.json");
             const electionData = await electionResponse.json();
 
             console.log('Election data loaded:', electionData);
